@@ -1,0 +1,23 @@
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011">
+  <Metadata>
+    <Identity Id="7ca5e40e-4946-4da8-be1f-b3bab3e8adfc" Version="1.0" Language="en-US" Publisher="devcoach" />
+    <DisplayName>KarmaVs</DisplayName>
+    <Description xml:space="preserve">Use Karma for Continous JavaScript Testing with feedback through the Visual Studio Output Window</Description>
+    <License>Resources\LICENSE.txt</License>
+    <Icon>Resources\devcoach_logo_48x48.png</Icon>
+    <Tags>JavaScript EcmaScript Test Karma Angular Runner</Tags>
+  </Metadata>
+  <Installation InstalledByMsi="false">
+    <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="11.0" />
+    <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="12.0" />
+    <InstallationTarget Version="10.0" Id="Microsoft.VisualStudio.Pro" />
+  </Installation>
+  <Dependencies>
+    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" Version="4.5" />
+    <Dependency Id="Microsoft.VisualStudio.MPF" DisplayName="Visual Studio MPF" Version="[10.0,12.0)" />
+  </Dependencies>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.VsPackage" Path="devcoach.Tools.KarmaVs.pkgdef" />
+    <Asset Type="Microsoft.VisualStudio.ItemTemplate" Path="ItemTemplates" />
+  </Assets>
+</PackageManifest>

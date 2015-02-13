@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
-using System.Globalization;
+using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using devcoach.Tools.Properties;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
+using System.Drawing.Imaging;
 
 namespace devcoach.Tools
 {
@@ -45,7 +47,19 @@ namespace devcoach.Tools
     private static Events _events;
     private static DTEEvents _dteEvents;
     private static DocumentEvents _documentEvents;
+      private static DateTimeOffset _processTime;
+      private int errors;
+      private bool Enabled;
+      private DisplayType _displayType;
+      private enum DisplayType
+      {
+          Success,
+          Failure,
+          Running,
+          BuildError
+      };
 
+      private IVsStatusbar _statusBar;
     readonly Regex _outputDir =
         new Regex(
           @"\[[\d]{1,6}m{1}",
@@ -86,29 +100,32 @@ namespace devcoach.Tools
       }
 
       base.Initialize();
-
+        Enabled = false;
       // Add our command handlers for menu (commands must exist in .vsct file)
       var mcs =
         GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
-      if (null == mcs) return;
+
+      //var mcs2 =
+      //GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+      if (mcs == null) return;
 
       // Create the command for the menu item.
-      var menuCommandId1 =
+      var toggleRun =
         new CommandID(
-          GuidList.guidToggleKarmaVsUnitCmdSet,
+          GuidList.guidKarmaVsUnitCmdSet,
           (int)PkgCmdIDList.cmdidToggleKarmaVsUnit
         );
-      var menuItem1 = new MenuCommand(KarmaVsUnit, menuCommandId1);
-      mcs.AddCommand(menuItem1);
-
-      // Create the command for the menu item.
-      var menuCommandId2 =
+        
+         var karmaOptions =
         new CommandID(
-          GuidList.guidToggleKarmaVsE2eCmdSet,
-          (int)PkgCmdIDList.cmdidToggleKarmaVsE2e
+          GuidList.guidKarmaVsUnitCmdSet,
+          (int)PkgCmdIDList.cmdidOptionsKarmaVsUnit
         );
-      var menuItem2 = new MenuCommand(KarmaVsE2e, menuCommandId2);
+      var menuItem1 = new MenuCommand(KarmaVsUnit, toggleRun);
+        var menuItem2 = new MenuCommand(LaunchOptions, karmaOptions);
+      mcs.AddCommand(menuItem1);
       mcs.AddCommand(menuItem2);
+      _statusBar= (IVsStatusbar)GetService(typeof(SVsStatusbar));
     }
     #endregion
 
@@ -122,7 +139,14 @@ namespace devcoach.Tools
     #region RunKarmaVs()
     private void RunKarmaVs(string config = "unit")
     {
-      _karmaOutputWindowPane.Clear();
+        Enabled = true;
+
+        BackgroundWorker worker = new BackgroundWorker();
+        worker.DoWork += delegate { SetDisplay(); };
+        worker.RunWorkerAsync();
+       _displayType = DisplayType.Running;
+       errors = 0;
+       _karmaOutputWindowPane.Clear();
 
       ShutdownKarma();
 
@@ -133,6 +157,7 @@ namespace devcoach.Tools
             "ERROR: Node not found. Download and " +
             "install from: http://www.nodejs.org");
         _karmaOutputWindowPane.OutputString(Environment.NewLine);
+        _displayType = DisplayType.BuildError;
         return;
       }
 
@@ -146,6 +171,7 @@ namespace devcoach.Tools
         _karmaOutputWindowPane.OutputString(
             "ERROR: Karma was not found. Run \"npm install -g karma\"...");
         _karmaOutputWindowPane.OutputString(Environment.NewLine);
+        _displayType = DisplayType.BuildError;
         return;
       }
 
@@ -171,89 +197,91 @@ namespace devcoach.Tools
         Environment.SetEnvironmentVariable("FIREFOX_BIN", mozillaPath);
       }
 
-      if (Application.Solution.Projects.Count < 1)
-      {
-        _karmaOutputWindowPane.OutputString("ERROR: No projects loaded");
-        _karmaOutputWindowPane.OutputString(Environment.NewLine);
-        return;
-      }
-
-
-      var projects = GetProjects();
-
-      const string webApplication = "{349C5851-65DF-11DA-9384-00065B846F21}";
-      const string webSite = "{E24C65DC-7377-472B-9ABA-BC803B73C61A}";
-      const string testProject = "{3AC096D0-A1C2-E12C-1390-A8335801FDAB}";
-      const string appBuilder = "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}";
-
-      Project karmaProject = null;
       string karmaConfigFilePath = null;
       string projectDir = null;
-      foreach (var project in projects)
-      {
-        try
+        if (Settings.Default.KarmaConfigType == (int) KarmaVsStaticClass.KarmaConfigType.Default)
         {
-          var projectGuids = project.GetProjectTypeGuids(GetService);
+            karmaConfigFilePath = Path.Combine(projectDir, "karma." + config + ".conf.js");
+        }
+        else
+        {
+            karmaConfigFilePath = Settings.Default.KarmaConfigLocation;
+        }
 
-          _karmaOutputWindowPane.OutputString(
-              "DEBUG: project '" + project.Name + "' found; GUIDs: " + projectGuids);
-
-          if (projectGuids.Contains(webApplication) ||
-              projectGuids.Contains(webSite) ||
-              projectGuids.Contains(testProject) ||
-              projectGuids.Contains(appBuilder))
-          {
-            _karmaOutputWindowPane.OutputString(
-                "INFO: Web / Test project found: " + project.Name);
+        const string webApplication = "{349C5851-65DF-11DA-9384-00065B846F21}";
+        const string webSite = "{E24C65DC-7377-472B-9ABA-BC803B73C61A}";
+        const string testProject = "{3AC096D0-A1C2-E12C-1390-A8335801FDAB}";
+        const string appBuilder = "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}";
+        if (Application.Solution.Projects.Count < 1)
+        {
+            _karmaOutputWindowPane.OutputString("ERROR: No projects loaded");
             _karmaOutputWindowPane.OutputString(Environment.NewLine);
-
-            projectDir =
-                Path.GetDirectoryName(project.FileName);
-                
-            if (string.IsNullOrWhiteSpace(projectDir))
-            {
-                try
-                {
-                    var fullPath = project.Properties.Item("FullPath");
-                    projectDir = fullPath.Value.ToString();
-                }
-                catch (ArgumentException)
-                {
-                    
-                }
-            }
-
-            karmaConfigFilePath =
-                Path.Combine(projectDir, "karma." + config + ".conf.js");
-
-            if (File.Exists(karmaConfigFilePath))
-            {
-              _karmaOutputWindowPane.OutputString(
-                  "INFO: Configuration found: " + karmaConfigFilePath);
-              _karmaOutputWindowPane.OutputString(Environment.NewLine);
-              karmaProject = project;
-              break;
-            }
-          }
+            _displayType = DisplayType.BuildError;
+            return;
         }
-        catch (Exception ex)
+
+        var projects = GetProjects();
+        Project karmaProject = null;
+        foreach (var project in projects)
         {
+            try
+            {
+                var projectGuids = project.GetProjectTypeGuids(GetService);
 
+                _karmaOutputWindowPane.OutputString(
+                    "DEBUG: project '" + project.Name + "' found; GUIDs: " + projectGuids);
+
+                if (projectGuids.Contains(webApplication) ||
+                    projectGuids.Contains(webSite) ||
+                    projectGuids.Contains(testProject) ||
+                    projectGuids.Contains(appBuilder))
+                {
+                    _karmaOutputWindowPane.OutputString(
+                        "INFO: Web / Test project found: " + project.Name);
+                    _karmaOutputWindowPane.OutputString(Environment.NewLine);
+
+                    projectDir =
+                        Path.GetDirectoryName(project.FileName);
+
+                    if (string.IsNullOrWhiteSpace(projectDir))
+                    {
+                        try
+                        {
+                            var fullPath = project.Properties.Item("FullPath");
+                            projectDir = fullPath.Value.ToString();
+                        }
+                        catch (ArgumentException)
+                        {
+
+                        }
+                    }
+
+                    if (File.Exists(karmaConfigFilePath))
+                    {
+                        _karmaOutputWindowPane.OutputString(
+                            "INFO: Configuration found: " + karmaConfigFilePath);
+                        _karmaOutputWindowPane.OutputString(Environment.NewLine);
+                        karmaProject = project;
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
         }
-      }
-
-      if (karmaProject == null ||
-          projectDir == null)
-      {
-        _karmaOutputWindowPane.OutputString(
-            "INFO: No web project found with a file " +
-            "named \"karma." + config + ".conf.js\" " +
-            "in the root directory.");
-        _karmaOutputWindowPane.OutputString(Environment.NewLine);
-        return;
-      }
-
-      var nodeServerFilePath = Path.Combine(projectDir, "server.js");
+        if (karmaProject == null ||
+            projectDir == null)
+        {
+            _karmaOutputWindowPane.OutputString(
+                "INFO: No web project found with a file " +
+                "named \"karma." + config + ".conf.js\" " +
+                "in the root directory. Please check that one exists, or set the location of the config file in the options menu.");
+            _karmaOutputWindowPane.OutputString(Environment.NewLine);
+            _displayType = DisplayType.BuildError;
+            return;
+        }
+        var nodeServerFilePath = Path.Combine(projectDir, "server.js");
 
       if (File.Exists(nodeServerFilePath))
       {
@@ -274,7 +302,6 @@ namespace devcoach.Tools
                 WindowStyle = ProcessWindowStyle.Hidden,
               },
             };
-
         _karmaOutputWindowPane.OutputString(
             "INFO: Starting node server...");
         _karmaOutputWindowPane.OutputString(Environment.NewLine);
@@ -306,17 +333,21 @@ namespace devcoach.Tools
       _karmaProcess.Exited += KarmaProcessOnExited;
       _karmaProcess.EnableRaisingEvents = true;
 
+
       try
       {
         _karmaOutputWindowPane.OutputString("INFO: Starting karma server...");
         _karmaOutputWindowPane.OutputString(Environment.NewLine);
         _karmaProcess.Start();
-        _karmaProcess.BeginOutputReadLine();
+          _karmaProcess.BeginOutputReadLine();
+       var tmp =   _karmaOutputWindowPane.Collection.DTE;
+
       }
       catch (Exception ex)
       {
         _karmaOutputWindowPane.OutputString("ERROR: " + ex);
         _karmaOutputWindowPane.OutputString(Environment.NewLine);
+        _displayType = DisplayType.BuildError;
       }
     }
 
@@ -328,7 +359,6 @@ namespace devcoach.Tools
       ShutdownKarma();
     }
     #endregion
-
 
     #region GetProjects()
     public static IList<Project> GetProjects()
@@ -549,6 +579,12 @@ namespace devcoach.Tools
     #endregion
 
     #region KarmaVsUnit()
+
+      private void LaunchOptions(object sender, EventArgs e)
+      {
+          KarmaOptionsForm optionsForm = new KarmaOptionsForm();
+          optionsForm.ShowDialog();
+      }
     /// <summary>
     /// This function is the callback used to execute a command when the a menu item is clicked.
     /// See the Initialize method to see how the menu item is associated to this function using
@@ -556,6 +592,7 @@ namespace devcoach.Tools
     /// </summary>
     private void KarmaVsUnit(object sender, EventArgs e)
     {
+       
       if (_karmaProcess != null)
       {
         ShutdownKarma();
@@ -563,32 +600,146 @@ namespace devcoach.Tools
         _karmaOutputWindowPane.Clear();
         _karmaOutputWindowPane.OutputString("INFO: Karma has shut down!");
         _karmaOutputWindowPane.OutputString(Environment.NewLine);
-
+        Enabled = false;
         return;
       }
-
+    
       RunKarmaVs("unit");
-    } 
+    }
     #endregion
 
-    #region KarmaVsE2e
-    private void KarmaVsE2e(object sender, EventArgs e)
-    {
-      if (_karmaProcess != null)
+    #region Display()
+
+      private void SetDisplay()
       {
-        ShutdownKarma();
+          var currentStatus = _displayType;
 
-        _karmaOutputWindowPane.Clear();
-        _karmaOutputWindowPane.OutputString("INFO: Karma has shut down!");
-        _karmaOutputWindowPane.OutputString(Environment.NewLine);
+          var tmp = new Bitmap(25, 25);
+          object icon = tmp.GetHbitmap();
+          while (Enabled)
+          {
+              try
+              {
+                  if (_karmaProcess!=null && DateTimeOffset.Now - _processTime > TimeSpan.FromSeconds(1))
+                  {
+                       _displayType = (errors > 0) ? DisplayType.Failure : DisplayType.Success;
+                  }
+              }
+              catch (Exception){}
 
-        return;
+              if (currentStatus != _displayType)
+              {
+                  if (_displayType == DisplayType.Running)
+                  {
+                       errors = 0;
+                  }
+                  currentStatus = _displayType;
+                  int frozen;
+                  _statusBar.IsFrozen(out frozen);
+                  if (frozen == 0)
+                  {
+                       _statusBar.Animation(0, ref icon);
+                       var image =GetDisplayObject(currentStatus);
+                      //var tmp = ConvertToRGB(image);
+                       
+                       icon = ConvertToRGB(image).GetHbitmap();
+                      _statusBar.Animation(1, ref icon);
+                  }
+              }
+          }
+          _statusBar.Animation(0, ref icon);
       }
 
-      RunKarmaVs("e2e");
-    } 
-    #endregion
+      public static Bitmap GetInvertedBitamp(IVsUIShell5 shell5, Bitmap inputBitmap, Color transparentColor,
+          UInt32 backgroundColor)
+      {
+          var outputBitmap = new Bitmap(inputBitmap);
+          try
+          {
+              outputBitmap.MakeTransparent(transparentColor);
 
+              var rect = new Rectangle(0, 0, outputBitmap.Width, outputBitmap.Height);
+
+              var bitmapData = outputBitmap.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite, outputBitmap.PixelFormat);
+              var sourcePointer = bitmapData.Scan0;
+              var length = (Math.Abs(bitmapData.Stride)*outputBitmap.Height);
+              var outputBytes = new Byte[length - 1];
+              Marshal.Copy(sourcePointer, outputBytes, 0, length);
+
+              shell5.ThemeDIBits((UInt32) outputBytes.Length, outputBytes, (UInt32) outputBitmap.Width,
+                  (UInt32) outputBitmap.Height, true, backgroundColor);
+              Marshal.Copy(outputBytes, 0, sourcePointer, length);
+              outputBitmap.UnlockBits(bitmapData);
+          }
+          catch (Exception ex)
+          {
+
+          }
+          return outputBitmap;
+      }
+
+      public static Bitmap ConvertToRGB(Bitmap original)
+      {
+          var shell5 = GetIVsUIShell5();
+
+          var backgroundColor = shell5.GetThemedColor(new System.Guid("DC0AF70E-5097-4DD3-9983-5A98C3A19942"), "ToolWindowBackground", 0);
+          //var outputBitmap = GetInvertedBitmap(shell5, inputBitmap, almostGreenColor, backgroundColor);
+          Bitmap newImage = new Bitmap(original.Width, original.Height, PixelFormat.Format32bppArgb);
+          newImage.SetResolution(original.HorizontalResolution,
+                                 original.VerticalResolution);
+          Graphics g = Graphics.FromImage(newImage);
+          g.Clear(ColorTranslator.FromWin32(Convert.ToInt32(backgroundColor & 0xffffff)));
+          g.DrawImageUnscaled(original, 0, 0);
+          g.Dispose();
+          return newImage;
+      }
+      private static Microsoft.VisualStudio.Shell.Interop.IVsUIShell5 GetIVsUIShell5()
+      {
+
+          Microsoft.VisualStudio.OLE.Interop.IServiceProvider sp = null;
+          Type SVsUIShellType = null;
+          int hr = 0;
+          IntPtr serviceIntPtr;
+          Microsoft.VisualStudio.Shell.Interop.IVsUIShell5 shell5 = null;
+          object serviceObject = null;
+
+          sp = (Microsoft.VisualStudio.OLE.Interop.IServiceProvider)Application;
+
+          SVsUIShellType = typeof(Microsoft.VisualStudio.Shell.Interop.SVsUIShell);
+
+          hr = sp.QueryService(SVsUIShellType.GUID, SVsUIShellType.GUID, out serviceIntPtr);
+
+          if (hr != 0)
+          {
+              System.Runtime.InteropServices.Marshal.ThrowExceptionForHR(hr);
+          }
+          else if (!serviceIntPtr.Equals(IntPtr.Zero))
+          {
+              serviceObject = System.Runtime.InteropServices.Marshal.GetObjectForIUnknown(serviceIntPtr);
+
+              shell5 = (Microsoft.VisualStudio.Shell.Interop.IVsUIShell5)serviceObject;
+
+              System.Runtime.InteropServices.Marshal.Release(serviceIntPtr);
+          }
+          return shell5;
+      }
+      private Bitmap GetDisplayObject(DisplayType type)
+      {
+          switch (type)
+          {
+              case DisplayType.BuildError:
+                  return Resources._1420674003_001_11;
+              case DisplayType.Failure:
+                  return Resources._1420678809_001_19;
+              case DisplayType.Running:
+                  return Resources._1420678868_001_25;
+              case DisplayType.Success:
+                  return Resources._1420678794_001_18;
+              default:
+                  return null;
+          }
+      }
+    #endregion
     #region OutputReceived()
     private void OutputReceived(
           object sender,
@@ -596,13 +747,18 @@ namespace devcoach.Tools
     {
       try
       {
+          _processTime = DateTimeOffset.Now;
+          _displayType = DisplayType.Running;
+          if (dataReceivedEventArgs.Data.ToLower().Contains("failed"))
+          {
+              errors++;
+          }
         _karmaOutputWindowPane.Activate();
         _karmaOutputWindowPane.OutputString(
           FixData(dataReceivedEventArgs.Data));
         _karmaOutputWindowPane.OutputString(
           Environment.NewLine);
       }
-      // ReSharper disable once EmptyGeneralCatchClause
       catch { }
     }
     #endregion

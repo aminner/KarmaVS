@@ -1,0 +1,12 @@
+C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\SampleWebApplication\bin\SampleWebApplication.dll.config
+C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\SampleWebApplication\bin\SampleWebApplication.dll
+C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\SampleWebApplication\bin\SampleWebApplication.pdb
+C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\SampleWebApplication\obj\Debug\SampleWebApplication.csprojResolveAssemblyReference.cache
+C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\SampleWebApplication\obj\Debug\SampleWebApplication.dll
+C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\SampleWebApplication\obj\Debug\SampleWebApplication.pdb
+C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\SampleWebApplication\bin\SampleWebApplication.dll.config
+C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\SampleWebApplication\bin\SampleWebApplication.dll
+C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\SampleWebApplication\bin\SampleWebApplication.pdb
+C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\SampleWebApplication\obj\Debug\SampleWebApplication.csprojResolveAssemblyReference.cache
+C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\SampleWebApplication\obj\Debug\SampleWebApplication.dll
+C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\SampleWebApplication\obj\Debug\SampleWebApplication.pdb

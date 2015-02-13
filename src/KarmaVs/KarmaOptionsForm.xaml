@@ -1,0 +1,14 @@
+﻿<Window x:Class="devcoach.Tools.KarmaOptionsForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="KarmaOptionsForm" Height="163.715" Width="351.986" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowState="Maximized" Topmost="True">
+    <Grid HorizontalAlignment="Left" Width="342" Margin="0,0,0,6">
+        <Button x:Name="Save" Content="Save" Margin="187,95,10,10" Click="Save_Click" RenderTransformOrigin="0.448,2"/>
+        <RadioButton x:Name="Default" Content="Default" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" IsChecked="True" Checked="Default_Checked"/>
+        <RadioButton x:Name="Custom" Content="Custom" HorizontalAlignment="Left" Margin="10,55,0,0" VerticalAlignment="Top" Checked="Custom_Checked"/>
+        <TextBox x:Name="KarmaConfigFile" Height="23" Margin="10,6,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Button x:Name="selectButton" Content="Select Karma Config" HorizontalAlignment="Left" Margin="187,55,0,0" VerticalAlignment="Top" Width="145" Click="selectButton_Click"/>
+        <Button x:Name="Cancel" Content="Cancel" HorizontalAlignment="Left" Margin="10,95,0,10" Width="155" Click="Cancel_OnClick"/>
+
+    </Grid>
+</Window>
