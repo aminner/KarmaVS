@@ -1,51 +1,28 @@
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\out\ItemTemplates\KarmaJSConfiguration.zip
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\out\Resources\LICENSE.txt
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\out\Resources\devcoach_logo_48x48.png
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\out\devcoach.Tools.KarmaVs.dll
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\out\devcoach.Tools.KarmaVs.pdb
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\out\devcoach.Tools.KarmaVs.pkgdef
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\out\devcoach.Tools.KarmaVs.vsix
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\out\extension.vsixmanifest
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\KarmaVs.csprojResolveAssemblyReference.cache
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\KarmaVs.csproj.ResolveComReference.cache
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\VSPackage.resources
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\devcoach.Tools.Resources.resources
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\KarmaVs.csproj.GenerateResource.Cache
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\KarmaVs.cto
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\VSCT.read.1.tlog
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\VSCT.write.1.tlog
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\CtoResourceMerger.cache
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\VSPackage.resources.original
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\devcoach.Tools.KarmaVs.dll
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\devcoach.Tools.KarmaVs.pdb
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\devcoach.Tools.KarmaVs.pkgdef
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\devcoach.Tools.KarmaVs.latest.pkgdef
-C:\Users\minnera\Downloads\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\extension.vsixmanifest
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\KarmaVs.csproj.ResolveComReference.cache
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\VSPackage.resources
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\KarmaVs.csproj.GenerateResource.Cache
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\KarmaVs.csprojResolveAssemblyReference.cache
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\out\ItemTemplates\KarmaJSConfiguration.zip
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\out\Resources\LICENSE.txt
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\out\Resources\devcoach_logo_48x48.png
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\out\devcoach.Tools.KarmaVs.dll
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\out\devcoach.Tools.KarmaVs.pdb
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\out\devcoach.Tools.KarmaVs.pkgdef
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\out\devcoach.Tools.KarmaVs.vsix
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\out\extension.vsixmanifest
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\KarmaVs.cto
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\VSCT.read.1.tlog
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\VSCT.write.1.tlog
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\CtoResourceMerger.cache
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\VSPackage.resources.original
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\devcoach.Tools.KarmaVs.dll
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\devcoach.Tools.KarmaVs.pdb
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\devcoach.Tools.KarmaVs.pkgdef
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\devcoach.Tools.KarmaVs.latest.pkgdef
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\extension.vsixmanifest
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\out\devcoach.Tools.KarmaVs.dll.config
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\KarmaOptionsForm.baml
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\KarmaOptionsForm.g.cs
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\devcoach.Tools.KarmaVs_MarkupCompile.cache
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\devcoach.Tools.KarmaVs.g.resources
-C:\Users\minnera\Documents\Visual Studio 2013\Projects\KarmaVS-master\KarmaVS-master\src\KarmaVs\obj\Debug\devcoach.Tools.Properties.Resources.resources
+C:\Users\minnera\Documents\GitHub\KarmaVS\out\ItemTemplates\KarmaJSConfiguration.zip
+C:\Users\minnera\Documents\GitHub\KarmaVS\out\Resources\LICENSE.txt
+C:\Users\minnera\Documents\GitHub\KarmaVS\out\Resources\devcoach_logo_48x48.png
+C:\Users\minnera\Documents\GitHub\KarmaVS\out\devcoach.Tools.KarmaVs.dll.config
+C:\Users\minnera\Documents\GitHub\KarmaVS\out\devcoach.Tools.KarmaVs.dll
+C:\Users\minnera\Documents\GitHub\KarmaVS\out\devcoach.Tools.KarmaVs.pdb
+C:\Users\minnera\Documents\GitHub\KarmaVS\out\devcoach.Tools.KarmaVs.pkgdef
+C:\Users\minnera\Documents\GitHub\KarmaVS\out\devcoach.Tools.KarmaVs.vsix
+C:\Users\minnera\Documents\GitHub\KarmaVS\out\extension.vsixmanifest
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\KarmaVs.csprojResolveAssemblyReference.cache
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\KarmaVs.csproj.ResolveComReference.cache
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\KarmaOptionsForm.baml
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\KarmaOptionsForm.g.cs
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\devcoach.Tools.KarmaVs_MarkupCompile.cache
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\devcoach.Tools.KarmaVs.g.resources
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\VSPackage.resources
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\devcoach.Tools.Properties.Resources.resources
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\KarmaVs.csproj.GenerateResource.Cache
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\KarmaVs.cto
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\VSCT.read.1.tlog
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\VSCT.write.1.tlog
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\CtoResourceMerger.cache
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\VSPackage.resources.original
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\devcoach.Tools.KarmaVs.dll
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\devcoach.Tools.KarmaVs.pdb
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\devcoach.Tools.KarmaVs.pkgdef
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\devcoach.Tools.KarmaVs.latest.pkgdef
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\extension.vsixmanifest

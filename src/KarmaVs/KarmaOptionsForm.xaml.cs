@@ -30,14 +30,14 @@ namespace devcoach.Tools
 
         private void SetInitialConfig()
         {
-            if (Properties.Settings.Default.KarmaConfigType == (int)KarmaVsStaticClass.KarmaConfigType.Default)
+            if (Settings.Default.KarmaConfigType == (int)KarmaVsStaticClass.KarmaConfigType.Default)
             {
                 Default.IsChecked = true;
             }
             else
             {
                 Custom.IsChecked = true;
-                KarmaConfigFile.Text = Properties.Settings.Default.KarmaConfigLocation;
+                KarmaConfigFile.Text = Settings.Default.KarmaConfigLocation;
             }
         }
 

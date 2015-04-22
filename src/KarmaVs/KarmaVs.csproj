@@ -10,6 +10,9 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -128,9 +131,12 @@
   <ItemGroup>
     <Compile Include="Extensions.cs" />
     <Compile Include="Guids.cs" />
+    <Compile Include="KarmaCommandLine.cs" />
+    <Compile Include="KarmaExecution.cs" />
     <Compile Include="KarmaOptionsForm.xaml.cs">
       <DependentUpon>KarmaOptionsForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="KarmaVsDisplay.cs" />
     <Compile Include="KarmaVsStaticClass.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -146,6 +152,7 @@
     <Compile Include="KarmaVsPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PkgCmdID.cs" />
+    <Compile Include="Support.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -191,8 +198,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <None Include="Resources\1420674011_001_02.gif" />
-    <None Include="Resources\1420674020_001_06.png" />
     <None Include="Resources\1420674003_001_11.png" />
     <None Include="Resources\1420678868_001_25.gif" />
     <None Include="Resources\1420678809_001_19.png" />

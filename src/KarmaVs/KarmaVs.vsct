@@ -66,8 +66,17 @@
       <Button guid="guidKarmaVsUnitCmdSet" id="cmdidToggleKarmaVsUnit" priority="0x0100" type="Button">
         <Parent guid="guidKarmaVsUnitCmdSet" id="KarmaVsTopLevelMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
-          <ButtonText>Enable/Disable</ButtonText>
+          <ButtonText>Enable</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidKarmaVsUnitCmdSet" id="cmdidRunTests" priority="0x0100" type="Button">
+        <Parent guid="guidKarmaVsUnitCmdSet" id="KarmaVsTopLevelMenuGroup" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>Run Tests</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidKarmaVsUnitCmdSet" id="cmdidOptionsKarmaVsUnit" priority="0x0100" type="Button">
@@ -77,7 +86,6 @@
         </Strings>
       </Button>
     </Buttons>
-   
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
     <Bitmaps>
       <!--  The bitmap id is defined in a way that is a little bit different from the others: 
@@ -90,6 +98,13 @@
     </Bitmaps>
  
   </Commands>
+  <VisibilityConstraints>
+    <!--Make the MenuController show up only when there is a solution with more than one project loaded-->
+    <VisibilityItem guid="guidKarmaVsUnitCmdSet" id="cmdidToggleKarmaVsUnit" context="UICONTEXT_SolutionHasMultipleProjects"/>
+    <VisibilityItem guid="guidKarmaVsUnitCmdSet" id="cmdidToggleKarmaVsUnit" context="UICONTEXT_SolutionHasMultipleProjects"/>
+    <VisibilityItem guid="guidKarmaVsUnitCmdSet" id="cmdidRunTests" context="UICONTEXT_SolutionHasMultipleProjects"/>
+    <VisibilityItem guid="guidKarmaVsUnitCmdSet" id="cmdidRunTests" context="UICONTEXT_SolutionHasMultipleProjects"/>
+  </VisibilityConstraints>
   <Symbols>
     <!-- This is the package guid. -->
     <GuidSymbol name="guidKarmaVsPkg" value="{7ca5e40e-4946-4da8-be1f-b3bab3e8adfc}" />
@@ -100,7 +115,8 @@
       <IDSymbol name="KarmaVsTopLevelMenu" value ="0x0100"/>
       <IDSymbol name="KarmaVsTopLevelMenuGroup" value="0x0200" />
       <IDSymbol name="cmdidToggleKarmaVsUnit" value="0x0300" />
-      <IDSymbol name="cmdidOptionsKarmaVsUnit" value="0x0301"/>
+      <IDSymbol name="cmdidRunTests" value ="0x0301"/>
+      <IDSymbol name="cmdidOptionsKarmaVsUnit" value="0x0302"/>
     </GuidSymbol>
 
     <GuidSymbol name="guidImages" value="{57273128-3ae8-4334-b050-c70338e9b2d2}" >
