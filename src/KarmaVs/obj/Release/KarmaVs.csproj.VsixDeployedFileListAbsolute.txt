@@ -1,0 +1,7 @@
+C:\Users\minnera\AppData\Local\Microsoft\VisualStudio\12.0Exp\Extensions\devcoach\KarmaVs\1.0\\devcoach.Tools.KarmaVs.dll
+C:\Users\minnera\AppData\Local\Microsoft\VisualStudio\12.0Exp\Extensions\devcoach\KarmaVs\1.0\\devcoach.Tools.KarmaVs.pkgdef
+C:\Users\minnera\AppData\Local\Microsoft\VisualStudio\12.0Exp\Extensions\devcoach\KarmaVs\1.0\\extension.vsixmanifest
+C:\Users\minnera\AppData\Local\Microsoft\VisualStudio\12.0Exp\Extensions\devcoach\KarmaVs\1.0\ItemTemplates\\KarmaJSConfiguration.zip
+C:\Users\minnera\AppData\Local\Microsoft\VisualStudio\12.0Exp\Extensions\devcoach\KarmaVs\1.0\Resources\LICENSE.txt
+C:\Users\minnera\AppData\Local\Microsoft\VisualStudio\12.0Exp\Extensions\devcoach\KarmaVs\1.0\Resources\\devcoach_logo_48x48.png
+C:\Users\minnera\AppData\Local\Microsoft\VisualStudio\12.0Exp\Extensions\devcoach\KarmaVs\1.0\\devcoach.Tools.KarmaVs.pdb
