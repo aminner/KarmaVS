@@ -116,9 +116,9 @@ namespace devcoach.Tools
                 return;
             }
 
-            if (KarmaVsPackage.KarmaProject == null ||
-                KarmaVsPackage.ProjectDirectory== null)
+            if (KarmaVsPackage.ProjectDirectory== null)
             {
+
                 _commandLine.LogComment("INFO: No web project found with a file " +
                     "named \"karma." + config + ".conf.js\" " +
                     "in the root directory. Please check that one exists, or set the location of the config file in the options menu.");

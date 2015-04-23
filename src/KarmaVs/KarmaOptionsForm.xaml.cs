@@ -1,18 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Configuration;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Microsoft.Win32;
-using System.Xaml;
 using devcoach.Tools.Properties;
 
 namespace devcoach.Tools
@@ -43,7 +32,7 @@ namespace devcoach.Tools
 
         private void selectButton_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog newOpenFileDialog = new OpenFileDialog();
+            OpenFileDialog newOpenFileDialog = new OpenFileDialog();
             Nullable<bool> result = newOpenFileDialog.ShowDialog();
             if (result==true)
             {
@@ -71,17 +60,18 @@ namespace devcoach.Tools
         {
             if (Custom.IsChecked==true)
             {
-                Settings.Default.KarmaConfigType = (int)KarmaVsStaticClass.KarmaConfigType.Custom;
-                Settings.Default.KarmaConfigLocation = KarmaConfigFile.Text;
-                Properties.Settings.Default.Save();
-                this.Close();
+                var settingsProperty = new SettingsProperty(KarmaVsPackage.ProjectGuids);
+                Settings.Default.Properties.Add(settingsProperty);
+                Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes.Add("ConfigLocation", KarmaConfigFile.Text);
+                Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes.Add("ConfigType", KarmaVsStaticClass.KarmaConfigType.Custom);
             }
             else
             {
-                Settings.Default.KarmaConfigType = (int)KarmaVsStaticClass.KarmaConfigType.Default;
-                Settings.Default.KarmaConfigLocation = "";
-                Properties.Settings.Default.Save();
+                Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes.Add("ConfigLocation", "");
+                Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes.Add("ConfigType", KarmaVsStaticClass.KarmaConfigType.Default);
             }
+            Settings.Default.Save();
+            Close();
         }
 
         private void Cancel_OnClick(object sender, RoutedEventArgs e)

@@ -46,6 +46,8 @@ namespace devcoach.Tools
         public static IVsStatusbar StatusBar;
         public static EnvDTE.Project KarmaProject;
         public static string ProjectDirectory;
+        public static string ProjectGuids;
+
 
         private static Events _events;private static DTEEvents _dteEvents;
         public static IMenuCommandService mcs;
@@ -90,8 +92,9 @@ namespace devcoach.Tools
 
         private void SolutionEventsOpened()
         {
+            GetProjects();
             if (mcs == null) return;
-            mcs.AddCommand(new MenuCommand(KarmaVsUnitRun, new CommandID(
+            mcs.AddCommand(new MenuCommand(KarmaVsUnitEnable, new CommandID(
                     GuidList.guidKarmaVsUnitCmdSet,
                     (int)PkgCmdIDList.cmdidToggleKarmaVsUnit
                    )));
@@ -99,10 +102,8 @@ namespace devcoach.Tools
                 new CommandID(GuidList.guidKarmaVsUnitCmdSet, (int) PkgCmdIDList.cmdidRunTests));
             mcs.AddCommand(run);
             run.Enabled = _karmaExecution._displaySettings.Enabled;
-            GetProjects();
             _karmaExecution.StartKarma();
         }
-
         public static void SetMenuStatus()
         {
             if (mcs == null || _karmaExecution == null)
@@ -115,26 +116,25 @@ namespace devcoach.Tools
                return;
             toggle.Text = _karmaExecution._displaySettings.Enabled ? "Enable" : "Disable";
         }
-        public void GetProjects()
+        private void GetProjects()
         {
-            var karmaConfigFilePath = Support.GetKarmaConfigPath();
             var projects = Support.GetProjects();
-            Project karmaProject = null;
             foreach (var project in projects)
             {
                 try
                 {
-                    var projectGuids = project.GetProjectTypeGuids(GetService);
-                    _karmaExecution._commandLine.LogComment("DEBUG: project '" + project.Name + "' found; GUIDs: " + projectGuids);
-                    if (projectGuids.Contains(webApplication) ||
-                        projectGuids.Contains(webSite) ||
-                        projectGuids.Contains(testProject) ||
-                        projectGuids.Contains(appBuilder))
+                    ProjectGuids = project.GetProjectTypeGuids(GetService);
+                    _karmaExecution._commandLine.LogComment("DEBUG: project '" + project.Name + "' found; GUIDs: " + ProjectGuids);
+                    if (ProjectGuids.Contains(webApplication) ||
+                        ProjectGuids.Contains(webSite) ||
+                        ProjectGuids.Contains(testProject) ||
+                        ProjectGuids.Contains(appBuilder))
                     {
                         _karmaExecution._commandLine.LogComment("INFO: Web / Test project found: " + project.Name);
 
                         ProjectDirectory =
                             Path.GetDirectoryName(project.FileName);
+                        var karmaConfigFilePath = Support.GetKarmaConfigPath();
 
                         if (String.IsNullOrWhiteSpace(ProjectDirectory))
                         {
@@ -143,9 +143,7 @@ namespace devcoach.Tools
                                 var fullPath = project.Properties.Item("FullPath");
                                 ProjectDirectory = fullPath.Value.ToString();
                             }
-                            catch (ArgumentException)
-                            {
-                            }
+                            catch (ArgumentException){}
                         }
                         if (File.Exists(karmaConfigFilePath))
                         {
@@ -165,7 +163,7 @@ namespace devcoach.Tools
             KarmaOptionsForm optionsForm = new KarmaOptionsForm();
             optionsForm.ShowDialog();
         }
-        private void KarmaVsUnitRun(object sender, EventArgs e)
+        private void KarmaVsUnitEnable(object sender, EventArgs e)
         {
             var toggle = mcs.FindCommand(new CommandID(GuidList.guidKarmaVsUnitCmdSet, (int)PkgCmdIDList.cmdidToggleKarmaVsUnit)) as OleMenuCommand; ;
             if (toggle == null)
@@ -179,5 +177,10 @@ namespace devcoach.Tools
                 _karmaExecution.StartKarma();
             }
         }
+        private void KarmaVsUnitRun(object sender, EventArgs e)
+        {
+             _karmaExecution.StartKarma();
+        }
+
     }
 }

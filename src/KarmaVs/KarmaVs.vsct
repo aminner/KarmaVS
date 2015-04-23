@@ -81,6 +81,7 @@
       </Button>
       <Button guid="guidKarmaVsUnitCmdSet" id="cmdidOptionsKarmaVsUnit" priority="0x0100" type="Button">
         <Parent guid="guidKarmaVsUnitCmdSet" id="KarmaVsTopLevelMenuGroup" />
+        <CommandFlag>DefaultDisabled</CommandFlag>
         <Strings>
           <ButtonText>Options</ButtonText>
         </Strings>

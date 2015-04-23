@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.Win32;
@@ -15,15 +12,18 @@ namespace devcoach.Tools
     {
         public static string GetKarmaConfigPath(string config = "unit")
         {
-            string karmaConfigFilePath = null;
-            string projectDir = null;
-            if (Settings.Default.KarmaConfigType == (int) KarmaVsStaticClass.KarmaConfigType.Default)
+            string karmaConfigFilePath;
+            string projectDir = KarmaVsPackage.ProjectDirectory;
+            if (KarmaVsPackage.ProjectGuids != null)
+                return "";
+
+            if ((int)Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes["ConfigType"] == (int)KarmaVsStaticClass.KarmaConfigType.Default)
             {
                 karmaConfigFilePath = Path.Combine(projectDir, "karma." + config + ".conf.js");
             }
             else
             {
-                karmaConfigFilePath = Settings.Default.KarmaConfigLocation;
+                karmaConfigFilePath = Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes["ConfigLocation"].ToString();
             }
             return karmaConfigFilePath;
         }
@@ -46,74 +46,75 @@ namespace devcoach.Tools
                 }
             }
         }
-         public static string GetChromePath()
-    {
-      var chromeFilePath =
-        Path.Combine(
-          Environment.GetFolderPath(
-            Environment.SpecialFolder.ProgramFiles),
-          "Google\\Chrome\\Application\\chrome.exe");
-      if (File.Exists(chromeFilePath))
-      {
-        return chromeFilePath;
-      }
+        public static string GetChromePath()
+        {
+            var chromeFilePath =
+                Path.Combine(
+                    Environment.GetFolderPath(
+                        Environment.SpecialFolder.ProgramFiles),
+                    "Google\\Chrome\\Application\\chrome.exe");
+            if (File.Exists(chromeFilePath))
+            {
+                return chromeFilePath;
+            }
 
-      chromeFilePath =
-        Path.Combine(
-          Environment.GetFolderPath(
-            Environment.SpecialFolder.ProgramFilesX86),
-          "Google\\Chrome\\Application\\chrome.exe");
+            chromeFilePath =
+                Path.Combine(
+                    Environment.GetFolderPath(
+                        Environment.SpecialFolder.ProgramFilesX86),
+                    "Google\\Chrome\\Application\\chrome.exe");
 
-      if (File.Exists(chromeFilePath))
-      {
-        return chromeFilePath;
-      }
+            if (File.Exists(chromeFilePath))
+            {
+                return chromeFilePath;
+            }
 
-      chromeFilePath =
-        Path.Combine(
-          Environment.GetFolderPath(
-            Environment.SpecialFolder.LocalApplicationData),
-          "Google\\Chrome\\Application\\chrome.exe");
+            chromeFilePath =
+                Path.Combine(
+                    Environment.GetFolderPath(
+                        Environment.SpecialFolder.LocalApplicationData),
+                    "Google\\Chrome\\Application\\chrome.exe");
 
-      if (File.Exists(chromeFilePath))
-      {
-        return chromeFilePath;
-      }
-      return null;
-    }
+            if (File.Exists(chromeFilePath))
+            {
+                return chromeFilePath;
+            }
+            return null;
+        }
 
-    public static string GetMozillaPath()
-    {
-      var mozillaFilePath =
-          Path.Combine(
-              Environment.GetFolderPath(
-                  Environment.SpecialFolder.ProgramFiles),
-              "Mozilla Firefox\\firefox.exe");
-      if (File.Exists(mozillaFilePath))
-      {
-        return mozillaFilePath;
-      }
-      mozillaFilePath =
-          Path.Combine(
-              Environment.GetFolderPath(
-                  Environment.SpecialFolder.ProgramFilesX86),
-              "Mozilla Firefox\\firefox.exe");
-      if (File.Exists(mozillaFilePath))
-      {
-        return mozillaFilePath;
-      }
-      mozillaFilePath =
-       Path.Combine(
-         Environment.GetFolderPath(
-           Environment.SpecialFolder.LocalApplicationData),
-         "Mozilla Firefox\\firefox.exe");
+        public static string GetMozillaPath()
+        {
+            var mozillaFilePath =
+                Path.Combine(
+                    Environment.GetFolderPath(
+                        Environment.SpecialFolder.ProgramFiles),
+                    "Mozilla Firefox\\firefox.exe");
+            if (File.Exists(mozillaFilePath))
+            {
+                return mozillaFilePath;
+            }
+            mozillaFilePath =
+                Path.Combine(
+                    Environment.GetFolderPath(
+                        Environment.SpecialFolder.ProgramFilesX86),
+                    "Mozilla Firefox\\firefox.exe");
+            if (File.Exists(mozillaFilePath))
+            {
+                return mozillaFilePath;
+            }
+            mozillaFilePath =
+                Path.Combine(
+                    Environment.GetFolderPath(
+                        Environment.SpecialFolder.LocalApplicationData),
+                    "Mozilla Firefox\\firefox.exe");
 
-      if (File.Exists(mozillaFilePath))
-      {
-        return mozillaFilePath;
-      }
-      return null;
-    }
+            if (File.Exists(mozillaFilePath))
+            {
+                return mozillaFilePath;
+            }
+            return null;
+        }
+
         public static string GetKarmaPath()
         {
             var karmaFilePath =

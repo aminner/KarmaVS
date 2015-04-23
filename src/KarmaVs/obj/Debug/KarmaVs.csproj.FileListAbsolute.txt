@@ -7,7 +7,6 @@ C:\Users\minnera\Documents\GitHub\KarmaVS\out\devcoach.Tools.KarmaVs.pdb
 C:\Users\minnera\Documents\GitHub\KarmaVS\out\devcoach.Tools.KarmaVs.pkgdef
 C:\Users\minnera\Documents\GitHub\KarmaVS\out\devcoach.Tools.KarmaVs.vsix
 C:\Users\minnera\Documents\GitHub\KarmaVS\out\extension.vsixmanifest
-C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\KarmaVs.csprojResolveAssemblyReference.cache
 C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\KarmaVs.csproj.ResolveComReference.cache
 C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\KarmaOptionsForm.baml
 C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\KarmaOptionsForm.g.cs
@@ -26,3 +25,4 @@ C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\devcoach.Tools.K
 C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\devcoach.Tools.KarmaVs.pkgdef
 C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\devcoach.Tools.KarmaVs.latest.pkgdef
 C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\extension.vsixmanifest
+C:\Users\minnera\Documents\GitHub\KarmaVS\src\KarmaVs\obj\Debug\KarmaVs.csprojResolveAssemblyReference.cache

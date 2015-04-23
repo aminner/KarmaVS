@@ -84,7 +84,6 @@ namespace devcoach.Tools
                         KarmaVsPackage.StatusBar.Animation(0, ref icon);
                         var image = GetDisplayObject(currentStatus);
                         //var tmp = ConvertToRGB(image);
-
                         icon = ConvertToRGB(image).GetHbitmap();
                         KarmaVsPackage.StatusBar.Animation(1, ref icon);
                     }

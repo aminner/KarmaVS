@@ -129,6 +129,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConvertImage.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="KarmaCommandLine.cs" />
