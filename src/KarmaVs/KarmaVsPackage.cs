@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
+using System.Configuration;
 using System.Data.OleDb;
 using System.Diagnostics;
 using System.Drawing;
@@ -44,7 +45,6 @@ namespace devcoach.Tools
 
         public static DTE2 Application { get; private set; }
         public static IVsStatusbar StatusBar;
-        public static EnvDTE.Project KarmaProject;
         public static string ProjectDirectory;
         public static string ProjectGuids;
 
@@ -61,11 +61,11 @@ namespace devcoach.Tools
 
         #region Initialize()
 
+        private KarmaVsStaticClass.SolutionState SolutionState;
         protected override void Initialize()
         {
             lock (_s_applicationLock)
             {
-
                 Application = (DTE2) GetService(typeof (SDTE));
                 _events = Application.Application.Events;
                 _dteEvents = _events.DTEEvents;
@@ -74,36 +74,61 @@ namespace devcoach.Tools
 
                 _dteEvents.OnBeginShutdown += _karmaExecution.ShutdownKarma;
                 _events.SolutionEvents.Opened += SolutionEventsOpened;
+                _events.SolutionEvents.AfterClosing += SolutionEvents_AfterClosing;
             }
 
-            base.Initialize();
             // Add our command handlers for menu (commands must exist in .vsct file)
-            mcs = GetService(typeof (IMenuCommandService)) as OleMenuCommandService;
+            mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (mcs == null) return;
 
-            mcs.AddCommand(new MenuCommand(LaunchOptions,  new CommandID(
+            mcs.AddCommand(new MenuCommand(LaunchOptions, new CommandID(
                     GuidList.guidKarmaVsUnitCmdSet,
-                    (int) PkgCmdIDList.cmdidOptionsKarmaVsUnit
+                    (int)PkgCmdIDList.cmdidOptionsKarmaVsUnit
                     )));
-            
-            StatusBar = (IVsStatusbar) GetService(typeof (SVsStatusbar));
+
+            StatusBar = (IVsStatusbar)GetService(typeof(SVsStatusbar));
+            SolutionState = KarmaVsStaticClass.SolutionState.Unloaded;
+            base.Initialize();
         }
+
+        void SolutionEvents_AfterClosing()
+        {
+            SolutionState = KarmaVsStaticClass.SolutionState.Unloaded;
+        }
+
         #endregion
 
         private void SolutionEventsOpened()
         {
             GetProjects();
-            if (mcs == null) return;
-            mcs.AddCommand(new MenuCommand(KarmaVsUnitEnable, new CommandID(
-                    GuidList.guidKarmaVsUnitCmdSet,
-                    (int)PkgCmdIDList.cmdidToggleKarmaVsUnit
-                   )));
-            var run = new MenuCommand(KarmaVsUnitRun,
-                new CommandID(GuidList.guidKarmaVsUnitCmdSet, (int) PkgCmdIDList.cmdidRunTests));
-            mcs.AddCommand(run);
-            run.Enabled = _karmaExecution._displaySettings.Enabled;
+            if (Settings.Default.Properties[ProjectGuids] == null)
+            {
+                var settingsProperty = new SettingsProperty(ProjectGuids);
+                Settings.Default.Properties.Add(settingsProperty);
+                Settings.Default.Properties[ProjectGuids].Attributes.Add("ConfigLocation", "");
+                Settings.Default.Properties[ProjectGuids].Attributes.Add("ConfigType", KarmaVsStaticClass.KarmaConfigType.Default);
+            }
+            
+            SolutionState = KarmaVsStaticClass.SolutionState.Loaded;
             _karmaExecution.StartKarma();
         }
+
+        void toggle_BeforeQueryStatus(object sender, EventArgs e)
+        {
+            var myCommand = sender as OleMenuCommand;
+            if (null != myCommand)
+            {
+                if (!_karmaExecution._displaySettings.Enabled)
+                {
+                    myCommand.Text = "Enable";
+                }
+                else
+                {
+                    myCommand.Text = "Disable";
+                }
+            }
+        }
+
         public static void SetMenuStatus()
         {
             if (mcs == null || _karmaExecution == null)
@@ -148,7 +173,6 @@ namespace devcoach.Tools
                         if (File.Exists(karmaConfigFilePath))
                         {
                             _karmaExecution._commandLine.LogComment("INFO: Configuration found: " + karmaConfigFilePath);
-                            KarmaProject = project;
                             break;
                         }
                     }
@@ -168,7 +192,7 @@ namespace devcoach.Tools
             var toggle = mcs.FindCommand(new CommandID(GuidList.guidKarmaVsUnitCmdSet, (int)PkgCmdIDList.cmdidToggleKarmaVsUnit)) as OleMenuCommand; ;
             if (toggle == null)
                 return;
-            if (toggle.Text == "Enabled")
+            if (toggle.Text == "Disable")
             {
                 _karmaExecution.StopKarma();
             }

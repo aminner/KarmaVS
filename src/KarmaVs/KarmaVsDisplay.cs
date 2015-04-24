@@ -10,6 +10,7 @@ namespace devcoach.Tools
     sealed internal class KarmaVsDisplay
     {
         public static int KarmaErrors =0;
+        private BackgroundWorker worker;
         private bool _enabled;
         public bool Enabled
         {
@@ -34,9 +35,12 @@ namespace devcoach.Tools
         }
         private void UpdateDisplay()
         {
-            BackgroundWorker worker = new BackgroundWorker();
-            worker.DoWork += delegate { SetDisplay(); };
-            worker.RunWorkerAsync();
+            if (worker == null)
+            {
+                worker = new BackgroundWorker();
+                worker.DoWork += delegate { SetDisplay(); };
+                worker.RunWorkerAsync();
+            }
         }
         private Bitmap GetDisplayObject(DisplayType type)
         {

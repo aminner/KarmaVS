@@ -14,7 +14,7 @@ namespace devcoach.Tools
         {
             string karmaConfigFilePath;
             string projectDir = KarmaVsPackage.ProjectDirectory;
-            if (KarmaVsPackage.ProjectGuids != null)
+            if (KarmaVsPackage.ProjectGuids == null)
                 return "";
 
             if ((int)Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes["ConfigType"] == (int)KarmaVsStaticClass.KarmaConfigType.Default)

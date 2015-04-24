@@ -7,5 +7,11 @@
             Default,
             Custom
         };
+
+        public enum SolutionState
+        {
+            Loaded,
+            Unloaded
+        }
     }
 }

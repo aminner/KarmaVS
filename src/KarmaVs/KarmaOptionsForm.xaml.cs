@@ -19,14 +19,17 @@ namespace devcoach.Tools
 
         private void SetInitialConfig()
         {
-            if (Settings.Default.KarmaConfigType == (int)KarmaVsStaticClass.KarmaConfigType.Default)
+            if ((int) Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes["ConfigType"] == (int) KarmaVsStaticClass.KarmaConfigType.Default)
             {
                 Default.IsChecked = true;
+                KarmaConfigFile.IsEnabled = false;
+                selectButton.IsEnabled = false;
             }
             else
             {
                 Custom.IsChecked = true;
-                KarmaConfigFile.Text = Settings.Default.KarmaConfigLocation;
+                KarmaConfigFile.Text =
+                    Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes["ConfigLocation"].ToString();
             }
         }
 
@@ -60,15 +63,43 @@ namespace devcoach.Tools
         {
             if (Custom.IsChecked==true)
             {
-                var settingsProperty = new SettingsProperty(KarmaVsPackage.ProjectGuids);
-                Settings.Default.Properties.Add(settingsProperty);
-                Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes.Add("ConfigLocation", KarmaConfigFile.Text);
-                Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes.Add("ConfigType", KarmaVsStaticClass.KarmaConfigType.Custom);
+                if (Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes["ConfigLocation"] == null)
+                {
+                    Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes.Add("ConfigLocation", KarmaConfigFile.Text);
+                }
+                else
+                {
+                    Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes["ConfigLocation"] = KarmaConfigFile.Text;
+                }
+
+                if (Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes["ConfigType"] == null)
+                {
+                    Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes.Add("ConfigType", KarmaVsStaticClass.KarmaConfigType.Custom);
+                }
+                else
+                {
+                    Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes["ConfigType"] = KarmaVsStaticClass.KarmaConfigType.Custom;
+                }
             }
             else
             {
-                Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes.Add("ConfigLocation", "");
-                Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes.Add("ConfigType", KarmaVsStaticClass.KarmaConfigType.Default);
+                if (Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes["ConfigLocation"] == null)
+                {
+                    Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes.Add("ConfigLocation", "");
+                }
+                else
+                {
+                    Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes["ConfigLocation"] = "";
+                }
+
+                if (Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes["ConfigType"] == null)
+                {
+                    Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes.Add("ConfigType", KarmaVsStaticClass.KarmaConfigType.Default);    
+                }
+                else
+                {
+                    Settings.Default.Properties[KarmaVsPackage.ProjectGuids].Attributes["ConfigType"] = KarmaVsStaticClass.KarmaConfigType.Default;    
+                }
             }
             Settings.Default.Save();
             Close();
